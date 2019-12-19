@@ -14,6 +14,13 @@ mongoengine.connect('project1',host="mongodb",port=27017)
 
 app = Flask(__name__)
 
+from user_recource import User_Resource
+from flask_restful import Api
+
+api = Api(app)
+
+api.add_resource(User_Resource,'/user/')
+
 @app.route('/<string:nome>')
 def hello(nome):
     #print(User.objects(name=nome).get()['name'])
