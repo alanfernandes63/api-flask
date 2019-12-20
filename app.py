@@ -8,6 +8,7 @@ from resource.user_resource import User_Resource
 from controller.user_controller import User_Controller
 from flask import request
 from flask_jwt_extended import JWTManager
+from resource.login import Login
 
 class User(mongoengine.Document):
     name = mongoengine.StringField()
@@ -17,14 +18,14 @@ class User(mongoengine.Document):
 mongoengine.connect('project1',host="mongodb",port=27017)
 
 app = Flask(__name__)
-
+app.config['JWT_SECRET_KEY'] = 'super-secret'  # Change this!
 jwt = JWTManager(app)
 
 api = Api(app)
 jwt._set_error_handler_callbacks(api)
 
 api.add_resource(User_Resource,'/user/')
-
+api.add_resource(Login,'/login')
 
 @app.route('/<string:nome>')
 def hello(nome):

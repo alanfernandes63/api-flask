@@ -4,7 +4,7 @@ from flask_jwt_extended import jwt_required
 class User_Resource(Resource):
     @jwt_required
     def get(self):
-        return "200"
+        return "200",200
     def post(self):
         parse = reqparse.RequestParser()
         parse.add_argument('user', location='json')
