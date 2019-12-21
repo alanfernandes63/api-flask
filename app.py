@@ -4,7 +4,7 @@ import os
 import mongoengine
 from flask_restplus import Api
 from flask import Flask
-from resource.user_resource import User_Resource
+from resource.user_resource import User_Resource_One,User_Resource_List
 from controller.user_controller import User_Controller
 from flask import request
 from flask_jwt_extended import JWTManager
@@ -24,7 +24,8 @@ jwt = JWTManager(app)
 api = Api(app)
 jwt._set_error_handler_callbacks(api)
 
-api.add_resource(User_Resource,'/user/')
+api.add_resource(User_Resource_One,'/users/')
+api.add_resource(User_Resource_List,'/users/listall/')
 api.add_resource(Login,'/login')
 
 @app.route('/<string:nome>')

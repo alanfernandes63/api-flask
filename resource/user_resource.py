@@ -3,23 +3,23 @@ from flask_jwt_extended import jwt_required
 from controller.user_controller import User_Controller
 from exceptions.exeptions import None_User_Exception,User_Not_Found
 
+class User_Resource_One(Resource):
 
-class My_Exception(Exception):
-    """ my_exeption"""
-    pass
-
-
-class User_Resource(Resource):
-
-    @jwt_required
+    #@jwt_required
     def get(self):
-        return "200",200    
+        parse = parse = reqparse.RequestParser()
+        parse.add_argument('id', type=int)
+        args = parse.parse_args()
+
+        #TODO: find user in database
+
+        print(args)
 
     def post(self):
         user_controller = User_Controller()
 
         parse = reqparse.RequestParser()
-        parse.add_argument('user', location='json')
+        parse.add_argument('user', required=True, location='json', help="user is required!")
 
         args = parse.parse_args()
         print(args["user"])
@@ -34,4 +34,8 @@ class User_Resource(Resource):
 
         return "ok",200
 
+class User_Resource_List(Resource):
+    def get(self):
+        user_controller = User_Controller()
+        return user_controller.user_list()
 
