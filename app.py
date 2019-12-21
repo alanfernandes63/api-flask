@@ -15,7 +15,8 @@ class User(mongoengine.Document):
     endereco = mongoengine.StringField()
 
 #10.51.67.233
-mongoengine.connect('project1',host="mongodb",port=27017)
+#mongodb
+mongoengine.connect('project1',host="localhost",port=27017)
 
 app = Flask(__name__)
 app.config['JWT_SECRET_KEY'] = 'super-secret'  # Change this!
@@ -24,8 +25,8 @@ jwt = JWTManager(app)
 api = Api(app)
 jwt._set_error_handler_callbacks(api)
 
-api.add_resource(User_Resource_One,'/users/')
-api.add_resource(User_Resource_List,'/users/listall/')
+api.add_resource(User_Resource_One,'/users/findbyid/')
+api.add_resource(User_Resource_List,'/users/listall')
 api.add_resource(Login,'/login')
 
 @app.route('/<string:nome>')
