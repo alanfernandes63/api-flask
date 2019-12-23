@@ -1,11 +1,12 @@
 from flask_restplus import Resource,reqparse
-from flask_jwt_extended import jwt_required
+from flask_jwt_extended import jwt_required, jwt_refresh_token_required
 from controller.user_controller import User_Controller
 from exceptions.exeptions import None_User_Exception,User_Not_Found
 
 class User_Resource_One(Resource):
 
     #@jwt_required
+    @jwt_refresh_token_required
     def get(self):
         parse = parse = reqparse.RequestParser()
         parse.add_argument('id', type=str)
@@ -13,6 +14,7 @@ class User_Resource_One(Resource):
 
         user_controller = User_Controller()
         user_controller.user_find_by_id(args['id'])
+        print("teste")
         
     def post(self):
         user_controller = User_Controller()
