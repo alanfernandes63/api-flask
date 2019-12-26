@@ -1,7 +1,7 @@
 from flask_restplus import Resource,reqparse
 from flask_jwt_extended import jwt_required, jwt_refresh_token_required
 from controller.user_controller import User_Controller
-from exceptions.exeptions import None_User_Exception,User_Not_Found
+from exceptions.exeptions import Data_Exception
 
 class User_Resource_One(Resource):
 
@@ -14,8 +14,8 @@ class User_Resource_One(Resource):
 
         user_controller = User_Controller()
         user_controller.user_find_by_id(args['id'])
-        print("teste")
-        
+
+    @jwt_refresh_token_required
     def post(self):
         user_controller = User_Controller()
 
@@ -26,14 +26,14 @@ class User_Resource_One(Resource):
 
         try:
 
-            user_controller.save_user(args['user'])
+            user_controller.user_save(args['user'])
             return "user created", 201
 
-        except None_User_Exception:
-            return "no user", 400
+        except Data_Exception:
+            return "error in data", 400
 
 class User_Resource_List(Resource):
-    
+    @jwt_refresh_token_required
     def get(self):
         user_controller = User_Controller()
         return user_controller.user_list()

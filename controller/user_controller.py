@@ -1,9 +1,22 @@
-from exceptions.exeptions import None_User_Exception,User_Not_Found
+from exceptions.exeptions import Data_Exception
 from model.user import User
+import json
 
 class User_Controller():
-    def use_save(self, user):
-        self.validate_user(self.user)
+    def user_save(self, new_user):
+        # transform string to string_json
+        string_json = json.dumps(eval(new_user))
+        # transform string_json to dictionary
+        dictionary = json.loads(string_json)
+        if 'name' in dictionary:
+            # verify if 
+            if 'password' in dictionary:
+                self.validate_user(dictionary)
+            else:
+                raise Data_Exception
+            print("salvou!")
+        else:
+            raise Data_Exception
     
     def user_find_by_id(self, id):
 
@@ -21,6 +34,10 @@ class User_Controller():
     
     def validate_user(self, user):
         if user == None:
-           raise None_User_Exception("User None")
-        elif True:
-            raise User_Not_Found("User not found")
+            return False
+        elif user['name'] == None:
+            return False
+        elif user['password'] == None:
+            return False
+        else:
+            return True
