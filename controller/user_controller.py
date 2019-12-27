@@ -1,10 +1,16 @@
 from exceptions.exeptions import Data_Exception
 from model.user import User
 from util.connection_db import Connection
-from pymongo.errors import ServerSelectionTimeoutError
 import json
 
 class User_Controller():
+
+    connection = None
+
+    def __init__(self):
+
+        self.connection = Connection()
+
     def user_save(self, new_user):
         # transform string to string_json
         string_json = json.dumps(eval(new_user))
@@ -13,13 +19,10 @@ class User_Controller():
         if 'name' in user_dictionary:
             if 'password' in user_dictionary:
                 if self.validate_user(user_dictionary):
-                    connection = Connection()
-                    try:
-                        connection.check_connection()
-                    except ServerSelectionTimeoutError:
-                        print('erro in connection with database')
+                    
+                    self.connection.check_connection()
+                    User(new_user).save()
 
-                    #User(new_user).save()
                 else:
                     raise Data_Exception
             else:
@@ -39,7 +42,11 @@ class User_Controller():
 
     def user_list(self):
         #TODO: list all user from database
-        return [{'nome':'alan'}]
+        users = []
+        for user in User.objects():
+            users.append(user['name'])
+        #print(users)
+        return users
     
     def validate_user(self, user):
         if user == None:

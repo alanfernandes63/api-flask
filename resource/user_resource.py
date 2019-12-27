@@ -2,6 +2,7 @@ from flask_restplus import Resource,reqparse
 from flask_jwt_extended import jwt_required, jwt_refresh_token_required
 from controller.user_controller import User_Controller
 from exceptions.exeptions import Data_Exception
+from pymongo.errors import ServerSelectionTimeoutError
 
 class User_Resource_One(Resource):
 
@@ -31,6 +32,9 @@ class User_Resource_One(Resource):
 
         except Data_Exception:
             return "error in data", 400
+        except ServerSelectionTimeoutError:
+            print("error in connection with database")
+            return "servico temporariamente indiponível", 503
 
 class User_Resource_List(Resource):
     @jwt_refresh_token_required
