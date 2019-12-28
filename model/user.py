@@ -1,6 +1,7 @@
-import mongoengine
+from mongoengine import Document, StringField
+import json
 
-class User(mongoengine.Document):
-    name = mongoengine.StringField()
-    email = mongoengine.StringField()
-    password = mongoengine.StringField()
+class User(Document):
+    name = StringField()
+    email = StringField()
+    password = StringField()

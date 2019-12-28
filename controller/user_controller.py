@@ -2,6 +2,7 @@ from exceptions.exeptions import Data_Exception
 from model.user import User
 from util.connection_db import Connection
 import json
+from bson import json_util
 
 class User_Controller():
 
@@ -21,7 +22,11 @@ class User_Controller():
                 if self.validate_user(user_dictionary):
                     
                     self.connection.check_connection()
-                    User(new_user).save()
+                    user = User()
+
+                    user.name = user_dictionary['name']
+                    user.password = user_dictionary['password']
+                    user.save()
 
                 else:
                     raise Data_Exception
@@ -30,24 +35,12 @@ class User_Controller():
         else:
             raise Data_Exception
     
-    def user_find_by_id(self, id):
-
-        try:
-            #TODO: find user in database
-            User.objects(_id=self.id)
-            return []
-
-        except:
-            return []
+    def user_find_by_name(self, user_name):
+        
+        return json.loads(User.objects(name=user_name).get().to_json())
 
     def user_list(self):
-        #TODO: list all user from database
-        users = []
-        for user in User.objects():
-            users.append(user['name'])
-        #print(users)
-        return users
-    
+        return json.loads(User.objects().to_json())
     def validate_user(self, user):
         if user == None:
             return False
