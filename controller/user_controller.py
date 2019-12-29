@@ -1,8 +1,8 @@
 from exceptions.exeptions import Data_Exception
-from model.user import User
 from util.connection_db import Connection
+from model.user import User
+import bcrypt
 import json
-from bson import json_util
 
 class User_Controller():
 
@@ -25,7 +25,11 @@ class User_Controller():
                     user = User()
 
                     user.name = user_dictionary['name']
-                    user.password = user_dictionary['password']
+
+                    salt = bcrypt.gensalt()
+                    passwd = bytes(user_dictionary['password'], 'utf-8')
+                    hashed = bcrypt.hashpw(passwd, salt)
+                    user.password = hashed
                     user.save()
 
                 else:
@@ -40,7 +44,9 @@ class User_Controller():
         return json.loads(User.objects(name=user_name).get().to_json())
 
     def user_list(self):
+
         return json.loads(User.objects().to_json())
+
     def validate_user(self, user):
         if user == None:
             return False

@@ -1,7 +1,7 @@
-from mongoengine import Document, StringField
+from mongoengine import Document, StringField, BinaryField
 import json
 
 class User(Document):
     name = StringField()
     email = StringField()
-    password = StringField()
+    password = BinaryField()
