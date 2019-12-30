@@ -16,10 +16,16 @@ class User_Resource_One(Resource):
 
         user_controller = User_Controller()
         try:
+
             user = user_controller.user_find_by_name(args['name'])
             return user
+
         except DoesNotExist:
+
             return "user not found", 404
+        except ServerSelectionTimeoutError:
+            print("error in connection with database")
+            return "servico temporariamente indiponível", 503
 
     #@jwt_refresh_token_required
     def post(self):
@@ -45,4 +51,11 @@ class User_Resource_List(Resource):
     #@jwt_refresh_token_required
     def get(self):
         user_controller = User_Controller()
-        return user_controller.user_list()
+        
+        try:
+
+            return user_controller.user_list()
+
+        except ServerSelectionTimeoutError:
+            print("error in connection with database")
+            return "servico temporariamente indiponível", 503
