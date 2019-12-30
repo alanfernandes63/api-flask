@@ -44,11 +44,17 @@ class User_Controller():
         self.connection.check_connection()
         return json.loads(User.objects(name=user_name).exclude('password').get().to_json())
 
-    def user_list(self):
+    def user_list(self, current_page):
+        
+        items_per_page = 3
+        offset = 0
+
+        if current_page > 0:
+            offset = current_page * items_per_page
 
         self.connection.check_connection()
-
-        return json.loads(User.objects().exclude('password').to_json())
+        users_list = User.objects.skip( offset ).exclude('password').limit( items_per_page)
+        return json.loads(users_list.to_json())
 
     def validate_user(self, user):
         if user == None:

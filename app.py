@@ -22,7 +22,7 @@ api = Api(app)
 jwt._set_error_handler_callbacks(api)
 
 api.add_resource(User_Resource_One,'/users/')
-api.add_resource(User_Resource_List,'/users/listall')
+api.add_resource(User_Resource_List,'/users/listall/')
 api.add_resource(Login,'/login')
 
 #@app.route('/<string:nome>')

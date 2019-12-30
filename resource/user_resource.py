@@ -53,8 +53,11 @@ class User_Resource_List(Resource):
         user_controller = User_Controller()
         
         try:
+            parse = parse = reqparse.RequestParser()
+            parse.add_argument('page', type=int)
+            args = parse.parse_args()
 
-            return user_controller.user_list()
+            return user_controller.user_list(args['page'])
 
         except ServerSelectionTimeoutError:
             print("error in connection with database")
