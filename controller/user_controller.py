@@ -41,11 +41,14 @@ class User_Controller():
     
     def user_find_by_name(self, user_name):
         
-        return json.loads(User.objects(name=user_name).get().to_json())
+        self.connection.check_connection()
+        return json.loads(User.objects(name=user_name).exclude('password').get().to_json())
 
     def user_list(self):
 
-        return json.loads(User.objects().to_json())
+        self.connection.check_connection()
+
+        return json.loads(User.objects().exclude('password').to_json())
 
     def validate_user(self, user):
         if user == None:

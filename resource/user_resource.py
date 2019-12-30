@@ -8,7 +8,7 @@ from mongoengine.queryset import DoesNotExist
 class User_Resource_One(Resource):
 
     #@jwt_required
-    @jwt_refresh_token_required
+    #@jwt_refresh_token_required
     def get(self):
         parse = parse = reqparse.RequestParser()
         parse.add_argument('name', type=str)
