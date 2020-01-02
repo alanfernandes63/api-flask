@@ -1,8 +1,8 @@
 from flask_jwt_extended import create_access_token, create_refresh_token
 from flask_restplus import Resource,reqparse
+from mongoengine.errors import DoesNotExist
 from flask_restplus import Resource
 from model.user import User
-from mongoengine.errors import DoesNotExist
 from flask import jsonify
 import datetime
 import bcrypt
@@ -37,10 +37,3 @@ class Login(Resource):
                 return "senha incorreta", 404
         else:
             return "invalid payload", 400
-
-
-        #ret = {'access_token': create_access_token('alan')}
-        #return jsonify(ret), 200
-        #token = create_access_token(identity='alan', expires_delta=expires)
-        #token = create_refresh_token(identity='alan', expires_delta=expires)
-        #return token
