@@ -1,14 +1,13 @@
-from flask_restplus import Resource,reqparse
-from flask_jwt_extended import jwt_required, jwt_refresh_token_required
+from flask_jwt_extended import jwt_refresh_token_required
+from pymongo.errors import ServerSelectionTimeoutError
 from controller.user_controller import User_Controller
 from exceptions.exeptions import Data_Exception
-from pymongo.errors import ServerSelectionTimeoutError
 from mongoengine.queryset import DoesNotExist
+from flask_restplus import Resource,reqparse
 
 class User_Resource_One(Resource):
 
-    #@jwt_required
-    #@jwt_refresh_token_required
+    @jwt_refresh_token_required
     def get(self):
         parse = parse = reqparse.RequestParser()
         parse.add_argument('name', type=str)
@@ -48,7 +47,8 @@ class User_Resource_One(Resource):
             return "servico temporariamente indiponível", 503
 
 class User_Resource_List(Resource):
-    #@jwt_refresh_token_required
+
+    @jwt_refresh_token_required
     def get(self):
         user_controller = User_Controller()
         
